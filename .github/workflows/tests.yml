@@ -123,7 +123,7 @@ jobs:
 
       - name: Combine coverage data and display human readable report
         run: |
-          uvx nox --session=coverage
+          uvx nox --session=coverage -- -i
 
       - name: Create coverage report
         run: |
