@@ -48,7 +48,7 @@ invoice2data = "invoice2data.__main__:main"
 
 
 [tool.coverage.paths]
-source = ["src", "*/site-packages"]
+source = ["src/py_ocsf", "*/site-packages"]
 tests = ["tests", "*/tests"]
 
 [tool.coverage.run]
