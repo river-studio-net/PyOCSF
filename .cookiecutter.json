@@ -1,0 +1,16 @@
+{
+  "_checkout": null,
+  "_output_dir": "/home/***/git",
+  "_repo_dir": "/home/***/.cookiecutters/cookiecutter-uv-hypermodern-python",
+  "_template": "gh:bosd/cookiecutter-uv-hypermodern-python",
+  "author": "River Studio",
+  "copyright_year": "2025",
+  "development_status": "Development Status :: 1 - Planning",
+  "email": "pypi@river-studio.net",
+  "friendly_name": "The Python OCSF Library",
+  "github_user": "river-studio-net",
+  "license": "MIT",
+  "package_name": "py_ocsf",
+  "project_name": "py-ocsf",
+  "version": "0.0.0"
+}
