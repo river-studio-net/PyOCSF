@@ -89,6 +89,12 @@ jobs:
           if-no-files-found: ignore
           include-hidden-files: true
 
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }} && matrix.session == 'tests'
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
       - name: Upload documentation
         if: matrix.session == 'docs-build'
         uses: actions/upload-artifact@v4
