@@ -40,10 +40,13 @@ jobs:
       - name: Bump version for developmental release
         if: "! steps.check-version.outputs.tag"
         run: |
-          sed -i -e "s/0.0.0/${GITHUB_REF#refs/*/}/" pyproject.toml
-          # uv bump patch &&
-          # version=$(uv version | awk '{ print $2 }') &&
-          # uv bump $version.dev.$(date +%s)
+          # For development releases, create a dev version with timestamp
+          version=$(uv version | awk '{ print $2 }')
+          dev_version="${version}.dev.$(date +%s)"
+          uv bump "$dev_version"
+          
+          # For release versions, the version is already set by the tag
+          # No additional action needed
 
       - name: Build package
         run: |
