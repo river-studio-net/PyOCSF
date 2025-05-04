@@ -120,13 +120,11 @@ jobs:
         with:
           pattern: coverage-data-*
           merge-multiple: true
-          path: coverage-data
 
       - name: Create coverage report
         run: |
-          # Combine coverage data files
-          coverage combine coverage-data/.coverage.*
-          coverage xml -i
+          uvx nox --session=coverage -- combine .coverage.*
+          uvx nox --session=coverage -- xml -i
 
       - name: Upload coverage report
         uses: codecov/codecov-action@v5
