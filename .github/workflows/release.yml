@@ -44,7 +44,7 @@ jobs:
           version=$(uv version | awk '{ print $2 }')
           dev_version="${version}.dev.$(date +%s)"
           uv bump "$dev_version"
-          
+
           # For release versions, the version is already set by the tag
           # No additional action needed
 
