@@ -43,14 +43,23 @@ jobs:
           # For development releases, create a dev version with timestamp
           version=$(uv version | awk '{ print $2 }')
           dev_version="${version}.dev.$(date +%s)"
-          uv bump "$dev_version"
+          # Update pyproject.toml directly
+          sed -i "s/^version = .*/version = \"${dev_version}\"/" pyproject.toml
 
-          # For release versions, the version is already set by the tag
-          # No additional action needed
+          # Verify the version was updated
+          echo "Updated version in pyproject.toml:"
+          grep "version = " pyproject.toml
 
       - name: Build package
         run: |
+          # Clean any existing builds
+          rm -rf dist/
+          # Build the package
           uv build
+          # Verify the built package
+          ls -la dist/
+          # Check the package metadata
+          uv pip show dist/*.whl
 
       - name: Publish package on TestPyPI
         if: "! steps.check-version.outputs.tag"
