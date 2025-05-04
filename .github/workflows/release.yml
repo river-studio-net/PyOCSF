@@ -19,7 +19,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
 
       - name: Install uv
         uses: astral-sh/setup-uv@v4
@@ -40,21 +40,17 @@ jobs:
       - name: Bump version for developmental release
         if: "! steps.check-version.outputs.tag"
         run: |
-          sed -i -e "s/0.0.0/${GITHUB_REF#refs/*/}/" pyproject.toml
-          # uv bump patch &&
-          # version=$(uv version | awk '{ print $2 }') &&
-          # uv bump $version.dev.$(date +%s)
+          # For development releases, create a dev version with timestamp
+          version=$(uv version | awk '{ print $2 }')
+          dev_version="${version}.dev.$(date +%s)"
+          uv bump "$dev_version"
+
+          # For release versions, the version is already set by the tag
+          # No additional action needed
 
       - name: Build package
         run: |
           uv build
-
-      - name: Publish package on PyPI
-        if: steps.check-version.outputs.tag
-        uses: pypa/gh-action-pypi-publish@v1.12.2
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_TOKEN }}
 
       - name: Publish package on TestPyPI
         if: "! steps.check-version.outputs.tag"
@@ -63,6 +59,13 @@ jobs:
           user: __token__
           password: ${{ secrets.TEST_PYPI_TOKEN }}
           repository_url: https://test.pypi.org/legacy/
+
+      - name: Publish package on PyPI
+        if: steps.check-version.outputs.tag
+        uses: pypa/gh-action-pypi-publish@v1.12.2
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_TOKEN }}
 
       - name: Publish the release notes
         uses: release-drafter/release-drafter@v6.0.0
