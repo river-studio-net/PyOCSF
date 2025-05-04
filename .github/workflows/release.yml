@@ -59,7 +59,7 @@ jobs:
           # Verify the built package
           ls -la dist/
           # Check the package metadata
-          uv pip show dist/*.whl
+          python -c "import wheel; print(wheel.pkginfo.read_pkg_info('dist/*.whl'))"
 
       - name: Publish package on TestPyPI
         if: "! steps.check-version.outputs.tag"
