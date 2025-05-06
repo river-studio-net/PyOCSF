@@ -38,7 +38,7 @@ jobs:
             bash -o pipefail -c "uv version | awk '{ print \$2 }'"
 
       - name: Bump version for developmental release
-        if: "! steps.check-version.outputs.tag"
+        if: ! steps.check-version.outputs.tag
         run: |
           # For development releases, create a dev version with timestamp
           version=$(uv version | awk '{ print $2 }')
@@ -52,17 +52,11 @@ jobs:
 
       - name: Build package
         run: |
-          # Clean any existing builds
           rm -rf dist/
-          # Build the package
           uv build
-          # Verify the built package
-          ls -la dist/
-          # Check the package metadata
-          python -c "import wheel; print(wheel.pkginfo.read_pkg_info('dist/*.whl'))"
 
       - name: Publish package on TestPyPI
-        if: "! steps.check-version.outputs.tag"
+        if: ! steps.check-version.outputs.tag
         uses: pypa/gh-action-pypi-publish@v1.12.2
         with:
           user: __token__
