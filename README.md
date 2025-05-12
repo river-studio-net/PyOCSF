@@ -47,7 +47,7 @@ To learn more, see the [Contributor Guide].
 
 ## License
 
-Distributed under the terms of the [MIT license][license],
+Distributed under the terms of the [GNU General Public License v3.0 or higher][license],
 _The Python OCSF Library_ is free and open source software.
 
 ## Issues
