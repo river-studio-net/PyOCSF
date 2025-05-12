@@ -38,23 +38,26 @@ jobs:
             bash -o pipefail -c "uv version | awk '{ print \$2 }'"
 
       - name: Bump version for developmental release
-        if: "! steps.check-version.outputs.tag"
+        if: ! steps.check-version.outputs.tag
         run: |
           # For development releases, create a dev version with timestamp
           version=$(uv version | awk '{ print $2 }')
           dev_version="${version}.dev.$(date +%s)"
-          uv bump "$dev_version"
+          # Update pyproject.toml directly
+          sed -i "s/^version = .*/version = \"${dev_version}\"/" pyproject.toml
 
-          # For release versions, the version is already set by the tag
-          # No additional action needed
+          # Verify the version was updated
+          echo "Updated version in pyproject.toml:"
+          grep "version = " pyproject.toml
 
       - name: Build package
         run: |
+          rm -rf dist/
           uv build
 
       - name: Publish package on TestPyPI
-        if: "! steps.check-version.outputs.tag"
-        uses: pypa/gh-action-pypi-publish@v1.12.2
+        if: ! steps.check-version.outputs.tag
+        uses: pypa/gh-action-pypi-publish@v1.12.4
         with:
           user: __token__
           password: ${{ secrets.TEST_PYPI_TOKEN }}
@@ -62,7 +65,7 @@ jobs:
 
       - name: Publish package on PyPI
         if: steps.check-version.outputs.tag
-        uses: pypa/gh-action-pypi-publish@v1.12.2
+        uses: pypa/gh-action-pypi-publish@v1.12.4
         with:
           user: __token__
           password: ${{ secrets.PYPI_TOKEN }}
