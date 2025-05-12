@@ -9,7 +9,7 @@
   "email": "pypi@river-studio.net",
   "friendly_name": "The Python OCSF Library",
   "github_user": "river-studio-net",
-  "license": "MIT",
+  "license": "GPL-3.0-or-later",
   "package_name": "py_ocsf",
   "project_name": "py-ocsf",
   "version": "0.0.0"
